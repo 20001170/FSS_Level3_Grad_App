@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload history — FSS Level 3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#10243f;--navy-2:#1f4e78;--gold:#c8a24a;--paper:#f6f3ec;--ink:#1a1f26;--muted:#5d6873;--line:#ddd6c7;--ok:#2f7d4f;--warn-bg:#f8eccf;--warn:#9a6a16}
+    *{box-sizing:border-box}html,body{margin:0}
+    body{font-family:"Inter",system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.55}
+    .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+    header.masthead{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+    .masthead .wrap{padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .masthead .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 6px}
+    .masthead h1{font-family:"Fraunces",serif;font-weight:600;font-size:24px;margin:0}
+    .back{color:#c9d4e2;text-decoration:none;font-size:14px;font-weight:500;border:1px solid #2c405c;padding:9px 16px;border-radius:8px}
+    .back:hover{background:#16314f}
+    main .wrap{padding:30px 24px 60px}
+    h2{font-family:"Fraunces",serif;color:var(--navy);font-weight:600}
+    .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 22px}
+    .tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+    .tile .n{font-size:30px;font-weight:700;color:var(--navy)}
+    .tile .l{font-size:13px;color:var(--muted)}
+    table{border-collapse:collapse;width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;text-align:left;font-size:14px;border-bottom:1px solid var(--line)}
+    th{background:var(--navy);color:#fff;font-weight:600}
+    tr:last-child td{border-bottom:none}
+    .btn{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-weight:600;font-size:14px;border:none;cursor:pointer}
+    .btn:hover{background:var(--navy-2)}
+    .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+    .del{background:none;border:1px solid var(--line);color:#9c2b2b;border-radius:7px;padding:5px 10px;font-size:12px;cursor:pointer}
+    .note{background:var(--warn-bg);border:1px solid #e6cf94;color:var(--warn);padding:10px 14px;border-radius:9px;font-size:13px;margin:0 0 18px}
+    .muted{color:var(--muted);font-size:13px}
+    .dbline{font-size:12px;color:var(--muted);margin-top:8px;word-break:break-all}
+    .empty{background:#fff;border:1px dashed var(--line);border-radius:12px;padding:28px;text-align:center;color:var(--muted)}
+    .flash{background:#e7f1e6;border:1px solid #bcd9bf;color:var(--ok);padding:10px 14px;border-radius:9px;font-size:14px;margin:0 0 16px}
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Faculty of Social Sciences</p>
+        <h1>Upload history &amp; multi-year data</h1>
+      </div>
+      <a class="back" href="{{ url_for('index') }}">← New upload</a>
+    </div>
+  </header>
+  <main>
+    <div class="wrap">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}{% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}{% endif %}
+      {% endwith %}
+
+      {% if used_fallback %}<div class="note">{{ msg }}</div>{% endif %}
+
+      <div class="tiles">
+        <div class="tile"><div class="n">{{ batches|length }}</div><div class="l">Uploads stored</div></div>
+        <div class="tile"><div class="n">{{ stats.students }}</div><div class="l">Unique students (deduped)</div></div>
+        <div class="tile"><div class="n">{{ stats.eligible }}</div><div class="l">Eligible (master view)</div></div>
+      </div>
+
+      <p style="margin:0 0 18px">
+        <a class="btn" href="{{ url_for('cross_period') }}">Download cross-period summary (.xlsx)</a>
+        <span class="muted">&nbsp;Merges all uploads, keeping each student's most-complete record.</span>
+      </p>
+
+      <h2>Stored uploads</h2>
+      {% if batches %}
+      <table>
+        <tr><th>#</th><th>Uploaded</th><th>Source file</th><th>Academic year</th><th>Students</th><th>Eligible</th><th></th></tr>
+        {% for b in batches %}
+        <tr>
+          <td>{{ b.id }}</td>
+          <td>{{ b.uploaded_at.replace('T',' ') }}</td>
+          <td>{{ b.source_file or '—' }}</td>
+          <td>{{ b.academic_year or '—' }}</td>
+          <td>{{ b.n_students }}</td>
+          <td>{{ b.n_eligible }}</td>
+          <td>
+            <form method="post" action="{{ url_for('history_delete', batch_id=b.id) }}"
+                  onsubmit="return confirm('Remove this upload from the stored history? This cannot be undone.');">
+              <button class="del" type="submit">Remove</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <div class="empty">No uploads stored yet. Process a BOE record and it will be saved here automatically.</div>
+      {% endif %}
+
+      <p class="dbline">Database location: {{ db_path }}</p>
+      <p class="muted" style="margin-top:14px">
+        Each upload is stored on its own — individual reports always reflect just that file.
+        The cross-period summary is the only place uploads are merged, and there it keeps each
+        student's most-complete record (most credits, then most courses, then most recent upload).
+      </p>
+    </div>
+  </main>
+</body>
+</html>

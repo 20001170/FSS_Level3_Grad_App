@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Level 3 Graduation Eligibility — FSS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#10243f;        /* deep institutional blue */
+      --navy-2:#1f4e78;
+      --gold:#c8a24a;        /* UWI-style gold */
+      --gold-soft:#efe2c2;
+      --paper:#f6f3ec;       /* warm off-white */
+      --ink:#1a1f26;
+      --muted:#5d6873;
+      --line:#ddd6c7;
+      --ok:#2f7d4f; --ok-bg:#e2efdf;
+      --warn:#9a6a16; --warn-bg:#f8eccf;
+      --stop:#9c2b2b; --stop-bg:#f3dada;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font-family:"Inter",system-ui,sans-serif;
+      color:var(--ink); background:var(--paper);
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+    }
+    .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+    header.masthead{
+      background:var(--navy);
+      color:#fff;
+      border-bottom:3px solid var(--gold);
+    }
+    .masthead .wrap{padding:34px 24px 30px}
+    .eyebrow{
+      font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--gold);font-weight:600;margin:0 0 10px;
+    }
+    h1{
+      font-family:"Fraunces",Georgia,serif;
+      font-weight:600;font-size:34px;line-height:1.1;margin:0;
+      letter-spacing:-.01em;
+    }
+    .masthead p{margin:12px 0 0;color:#c9d4e2;max-width:52ch;font-size:15px}
+
+    main .wrap{padding:38px 24px 60px}
+
+    .card{
+      background:#fff;border:1px solid var(--line);border-radius:12px;
+      padding:30px;box-shadow:0 1px 0 rgba(16,36,63,.03);
+    }
+    .drop{
+      border:1.5px dashed #c4bda9;border-radius:10px;background:var(--paper);
+      padding:34px 24px;text-align:center;transition:border-color .15s, background .15s;
+      cursor:pointer;
+    }
+    .drop.drag{border-color:var(--gold);background:#fbf7ec}
+    .drop svg{width:40px;height:40px;color:var(--navy-2);opacity:.85}
+    .drop h2{font-family:"Fraunces",serif;font-weight:600;font-size:19px;margin:12px 0 4px}
+    .drop p{margin:4px 0;color:var(--muted);font-size:14px}
+    .filename{margin-top:14px;font-weight:600;color:var(--navy-2);font-size:14px;min-height:18px}
+    input[type=file]{display:none}
+
+    .btn{
+      appearance:none;border:0;cursor:pointer;font:inherit;font-weight:600;
+      background:var(--navy);color:#fff;padding:13px 26px;border-radius:8px;
+      font-size:15px;letter-spacing:.01em;transition:background .15s, transform .05s;
+      width:100%;margin-top:20px;
+    }
+    .btn:hover{background:#0a1a30}
+    .btn:active{transform:translateY(1px)}
+    .btn[disabled]{background:#9aa3ad;cursor:not-allowed}
+
+    .steps{display:grid;grid-template-columns:1fr;gap:2px;margin:26px 0 0;padding:0;list-style:none}
+    .steps li{
+      display:flex;gap:14px;align-items:flex-start;padding:13px 2px;
+      border-top:1px solid var(--line);color:var(--muted);font-size:14px;
+    }
+    .steps li:first-child{border-top:0}
+    .steps .num{
+      flex:0 0 auto;width:24px;height:24px;border-radius:50%;
+      background:var(--gold-soft);color:#7a5d1c;font-weight:700;font-size:13px;
+      display:grid;place-items:center;margin-top:1px;
+    }
+    .steps b{color:var(--ink);font-weight:600}
+
+    .flash{
+      background:var(--stop-bg);border:1px solid #e3b7b7;color:#7a2222;
+      padding:13px 16px;border-radius:9px;margin:0 0 20px;font-size:14px;
+    }
+    .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:24px;font-size:13px;color:var(--muted)}
+    .legend span{display:inline-flex;align-items:center;gap:7px}
+    .dot{width:11px;height:11px;border-radius:50%}
+    .dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.stop{background:var(--stop)}
+
+    footer{color:var(--muted);font-size:12.5px;text-align:center;padding:0 24px 40px}
+    footer .wrap{padding:0}
+    .spin{display:none;align-items:center;justify-content:center;gap:10px;margin-top:18px;color:var(--navy-2);font-weight:600;font-size:14px}
+    .spin.show{display:flex}
+    .spinner{width:18px;height:18px;border:2.5px solid #cdd6e0;border-top-color:var(--navy-2);border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media (max-width:520px){ h1{font-size:27px} .card{padding:22px} }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <p class="eyebrow">Faculty of Social Sciences · Cave Hill</p>
+      <h1>Level 3 Graduation Eligibility</h1>
+      <p>Upload a Board of Examiners academic-record PDF. Each Level 3 student is checked against
+         the programme requirements from their year of entry, and a downloadable eligibility report is produced.</p>
+      <p style="margin-top:14px"><a href="{{ url_for('history') }}" style="color:var(--gold);font-weight:600;text-decoration:none">View upload history &amp; multi-year data →</a></p>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <div class="card">
+        <form id="form" action="{{ url_for('process') }}" method="post" enctype="multipart/form-data">
+          <label class="drop" id="drop" for="pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 16V4m0 0L8 8m4-4l4 4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round"/>
+            </svg>
+            <h2>Choose the BOE PDF</h2>
+            <p>Click to browse, or drag the file here</p>
+            <div class="filename" id="filename"></div>
+          </label>
+          <input type="file" name="pdf" id="pdf" accept="application/pdf,.pdf">
+          <button type="submit" class="btn" id="go" disabled>Check eligibility</button>
+          <div class="spin" id="spin"><span class="spinner"></span> Reading the record and building your report…</div>
+        </form>
+
+        <div class="legend">
+          <span><i class="dot ok"></i> Eligible to graduate</span>
+          <span><i class="dot warn"></i> Credit-OK but missing a named course</span>
+          <span><i class="dot stop"></i> Courses still outstanding</span>
+        </div>
+      </div>
+
+      <ol class="steps">
+        <li><span class="num">1</span><div><b>Upload</b> the Board of Examiners academic-record PDF (one or many students).</div></li>
+        <li><span class="num">2</span><div><b>The app reads</b> each record, matches the student's entry-year handbook, and checks credit floors, named courses, and class of degree on the weighted GPA.</div></li>
+        <li><span class="num">3</span><div><b>Download</b> the result as a Word document, PDF, or the full Excel review sheet.</div></li>
+      </ol>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Runs entirely on this computer — nothing is uploaded to the internet.
+      Eligibility is necessary-condition screening; final sign-off remains with the examiner.
+    </div>
+  </footer>
+
+  <script>
+    const drop = document.getElementById('drop');
+    const input = document.getElementById('pdf');
+    const fname = document.getElementById('filename');
+    const go = document.getElementById('go');
+    const form = document.getElementById('form');
+    const spin = document.getElementById('spin');
+
+    function setFile(f){
+      if(f){ fname.textContent = f.name; go.disabled = false; }
+    }
+    input.addEventListener('change', e => setFile(e.target.files[0]));
+    ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e=>{e.preventDefault();drop.classList.add('drag');}));
+    ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e=>{e.preventDefault();drop.classList.remove('drag');}));
+    drop.addEventListener('drop', e => {
+      const f = e.dataTransfer.files[0];
+      if(f){ input.files = e.dataTransfer.files; setFile(f); }
+    });
+    form.addEventListener('submit', () => { go.disabled = true; go.textContent='Working…'; spin.classList.add('show'); });
+  </script>
+</body>
+</html>

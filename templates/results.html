@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eligibility results — FSS Level 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#10243f;--navy-2:#1f4e78;--gold:#c8a24a;--gold-soft:#efe2c2;
+      --paper:#f6f3ec;--ink:#1a1f26;--muted:#5d6873;--line:#ddd6c7;
+      --ok:#2f7d4f;--ok-bg:#e7f1e6;--warn:#9a6a16;--warn-bg:#f8eccf;
+      --stop:#9c2b2b;--stop-bg:#f3dada;--amber:#fff2cc;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{font-family:"Inter",system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.55;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+    header.masthead{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+    .masthead .wrap{padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .masthead .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 6px}
+    .masthead h1{font-family:"Fraunces",serif;font-weight:600;font-size:24px;margin:0}
+    .back{color:#c9d4e2;text-decoration:none;font-size:14px;font-weight:500;border:1px solid #2c405c;padding:9px 16px;border-radius:8px}
+    .back:hover{background:#16314f}
+
+    main .wrap{padding:30px 24px 60px}
+
+    .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:10px}
+    .tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;position:relative;overflow:hidden}
+    .tile .n{font-family:"Fraunces",serif;font-weight:700;font-size:34px;line-height:1;margin:0}
+    .tile .l{margin:7px 0 0;font-size:13px;color:var(--muted)}
+    .tile .bar{position:absolute;left:0;top:0;bottom:0;width:4px}
+    .tile.ok .bar{background:var(--ok)} .tile.ok .n{color:var(--ok)}
+    .tile.warn .bar{background:var(--warn)} .tile.warn .n{color:var(--warn)}
+    .tile.stop .bar{background:var(--stop)} .tile.stop .n{color:var(--stop)}
+    .tile.tot .bar{background:var(--navy-2)} .tile.tot .n{color:var(--navy-2)}
+
+    .downloads{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px;align-items:center}
+    .downloads .lab{font-size:13px;color:var(--muted);margin-right:4px}
+    .dl{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-weight:600;font-size:14.5px;
+        padding:12px 18px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink);transition:border-color .15s,background .15s}
+    .dl:hover{border-color:var(--gold);background:#fbf7ec}
+    .dl.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .dl.primary:hover{background:#0a1a30}
+    .dl svg{width:18px;height:18px}
+
+    section.block{margin-top:34px}
+    section.block h2{font-family:"Fraunces",serif;font-weight:600;font-size:20px;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+    section.block .sub{margin:0 0 14px;color:var(--muted);font-size:14px}
+    .pip{width:12px;height:12px;border-radius:50%}
+    .pip.ok{background:var(--ok)} .pip.warn{background:var(--warn)} .pip.stop{background:var(--stop)}
+
+    .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+    .tbl thead th{background:var(--navy);color:#fff;text-align:left;font-weight:600;font-size:12.5px;letter-spacing:.02em;padding:11px 13px}
+    .tbl td{padding:10px 13px;border-top:1px solid #eee7d8;vertical-align:top}
+    .tbl tbody tr:nth-child(even){background:#faf8f2}
+    .cls{font-weight:600}
+    .cls.first{color:#7a5d1c}
+    .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--amber);color:#7a5d1c;margin-left:6px;vertical-align:middle}
+    .missing{color:#7a2222;font-weight:600}
+    .muted{color:var(--muted)}
+    .empty{background:#fff;border:1px dashed var(--line);border-radius:12px;padding:22px;color:var(--muted);font-size:14px;text-align:center}
+    .note{background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:9px;padding:14px 16px;margin-top:18px;font-size:13.5px;color:var(--muted)}
+    .note b{color:var(--ink)}
+    @media (max-width:780px){ .tiles{grid-template-columns:repeat(2,1fr)} .tbl{font-size:13px} }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Faculty of Social Sciences · Cave Hill</p>
+        <h1>Level 3 Eligibility — Results</h1>
+      </div>
+      <a class="back" href="{{ url_for('index') }}">↻ Check another file</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+
+      <div class="tiles">
+        <div class="tile tot"><span class="bar"></span><p class="n">{{ c.total }}</p><p class="l">Level 3 records assessed</p></div>
+        <div class="tile ok"><span class="bar"></span><p class="n">{{ c.eligible }}</p><p class="l">Eligible to graduate · {{ pct_eligible }}</p></div>
+        <div class="tile warn"><span class="bar"></span><p class="n">{{ c.critical }}</p><p class="l">Credit-OK, missing a named course</p></div>
+        <div class="tile stop"><span class="bar"></span><p class="n">{{ c.near }}</p><p class="l">Near — 1–2 courses short</p></div>
+      </div>
+
+      <div class="downloads">
+        <span class="lab">Eligibility report:</span>
+        <a class="dl primary" href="{{ url_for('download', token=token, kind='docx') }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19h14" stroke-linecap="round"/></svg>
+          Word (.docx)
+        </a>
+        <a class="dl" href="{{ url_for('download', token=token, kind='pdf') }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19h14" stroke-linecap="round"/></svg>
+          PDF
+        </a>
+        <a class="dl" href="{{ url_for('download', token=token, kind='xlsx') }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19h14" stroke-linecap="round"/></svg>
+          Excel review sheet
+        </a>
+      </div>
+
+      <div class="downloads">
+        <span class="lab">Summary tables:</span>
+        <a class="dl" href="{{ url_for('download', token=token, kind='summary_docx') }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19h14" stroke-linecap="round"/></svg>
+          Summary report (.docx)
+        </a>
+        <a class="dl" href="{{ url_for('download', token=token, kind='summary_xlsx') }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19h14" stroke-linecap="round"/></svg>
+          Summary tables (.xlsx)
+        </a>
+      </div>
+      <p class="muted" style="font-size:13px;margin:2px 0 0">Summary includes: First Class lists by department &amp; programme, degree-band and graduating-semester counts (last 3 years), and department roll-ups.</p>
+
+      <!-- ELIGIBLE -->
+      <section class="block">
+        <h2><span class="pip ok"></span> Eligible to graduate</h2>
+        <p class="sub">Clear the credit floors (incl. EC exemptions) and all named-course requirements.
+           Class of degree is on the weighted GPA; <span class="badge">differs</span> marks where it changes the class versus the printed Degree GPA.</p>
+        {% if eligible %}
+        <table class="tbl">
+          <thead><tr><th>Student</th><th>Page</th><th>Programme</th><th>Entry</th><th>Wt GPA</th><th>Printed</th><th>Class of degree</th></tr></thead>
+          <tbody>
+            {% for r in eligible %}
+            <tr>
+              <td>{{ r.name }}</td>
+              <td>{{ r.page }}</td>
+              <td>{{ r.programme }}</td>
+              <td>{{ r.entry_year }}</td>
+              <td>{{ '%.2f'|format(r.weighted_gpa) }}</td>
+              <td class="muted">{{ '%.2f'|format(r.gpa) }}</td>
+              <td><span class="cls {{ 'first' if 'First' in r.class_of_degree else '' }}">{{ r.class_of_degree }}</span>{% if r.class_differs %}<span class="badge">differs</span>{% endif %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty">No students in this batch meet every requirement yet.</div>
+        {% endif %}
+      </section>
+
+      <!-- CRITICAL -->
+      <section class="block">
+        <h2><span class="pip warn"></span> Credit totals met — but a named course is missing</h2>
+        <p class="sub">A credit-only check would wrongly clear these. Each needs the named course before it can be recommended.</p>
+        {% if critical %}
+        <table class="tbl">
+          <thead><tr><th>Student</th><th>Page</th><th>Programme</th><th>Entry</th><th>Credits</th><th>Missing required course(s)</th></tr></thead>
+          <tbody>
+            {% for r in critical %}
+            <tr>
+              <td>{{ r.name }}</td>
+              <td>{{ r.page }}</td>
+              <td>{{ r.programme }}</td>
+              <td>{{ r.entry_year }}</td>
+              <td>{{ r.total_credits_effective }}</td>
+              <td class="missing">{{ (r.missing_level1 + r.missing_level23_named)|join(', ') }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty">None — no student clears the credits while missing a named course.</div>
+        {% endif %}
+      </section>
+
+      <!-- NEAR -->
+      <section class="block">
+        <h2><span class="pip stop"></span> Near — only 1–2 courses short</h2>
+        <p class="sub">Named requirements satisfied; just short of the credit floors.</p>
+        {% if near %}
+        <table class="tbl">
+          <thead><tr><th>Student</th><th>Page</th><th>Programme</th><th>Entry</th><th>Credits</th><th>Courses short</th></tr></thead>
+          <tbody>
+            {% for r in near %}
+            <tr>
+              <td>{{ r.name }}</td>
+              <td>{{ r.page }}</td>
+              <td>{{ r.programme }}</td>
+              <td>{{ r.entry_year }}</td>
+              <td>{{ r.total_credits_effective }}</td>
+              <td>~{{ r.n }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty">None in this batch.</div>
+        {% endif %}
+      </section>
+
+      {% if credit_only %}
+      <div class="note">
+        <b>{{ credit_only|length }} record(s) were screened on credit floors only</b> because their programme
+        doesn't yet have a named-course rule set:
+        {{ credit_only | map(attribute='programme') | unique | join(', ') }}.
+        They're included in the downloads, flagged for examiner confirmation. You can add these programmes
+        in <b>engine/programmes.py</b> to upgrade them to full named-course checking.
+      </div>
+      {% endif %}
+
+      <div class="note">
+        <b>How class of degree is decided:</b> on the weighted GPA (Level I weighted zero; Levels II &amp; III, passed
+        courses) per the Faculty regulation, using the bands in force in each student's <b>year of entry</b>.
+        First Class Honours is <b>3.60</b> for entry up to 2025/2026 and <b>3.70</b> for entry from 2026/2027 onward.
+        The full per-student detail — every missing course, EC-exemption credits,
+        and the printed-vs-weighted comparison — is in the Excel review sheet.
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>
