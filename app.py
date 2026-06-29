@@ -18,7 +18,7 @@ import datetime
 from flask import (Flask, request, render_template, send_file, redirect,
                    url_for, flash, session, jsonify)
 
-from engine.parser import parse_boe_pdf
+from engine.parse import parse_pdf
 from engine.eligibility import check_all, summarize
 from engine.reports import build_xlsx, build_docx, build_pdf
 from engine.summary_reports import build_summary_docx, build_summary_xlsx
@@ -91,14 +91,16 @@ def process():
     file.save(pdf_path)
 
     try:
-        students = parse_boe_pdf(pdf_path)
+        students, fmt = parse_pdf(pdf_path)
     except Exception as e:
         flash(f"Could not read that PDF: {e}")
         return redirect(url_for("index"))
 
     if not students:
-        flash("No student records were found in that PDF. Is it a Board of Examiners "
-              "academic-record export (with 'Degree GPA' and 'Level N Credits Earned' lines)?")
+        flash("No student records were found in that PDF. The app reads two export "
+              "types: the ARGOS 'Grids' academic record (three-column Level 1/2/3 "
+              "layout) and the older Board of Examiners export. Please check the file "
+              "is one of these.")
         return redirect(url_for("index"))
 
     results = check_all(students)
